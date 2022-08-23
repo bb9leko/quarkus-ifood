@@ -1,5 +1,9 @@
 package com.github.bb9leko.ifood.cadastro;
 
+import com.github.bb9leko.ifood.cadastro.dto.AdicionarRestauranteDTO;
+import com.github.bb9leko.ifood.cadastro.dto.RestauranteMapper;
+
+import javax.inject.Inject;
 import javax.transaction.Transactional;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -12,15 +16,20 @@ import java.util.Optional;
 @Consumes(MediaType.APPLICATION_JSON)
 public class RestauranteResource {
 
+    @Inject
+    RestauranteMapper restauranteMapper;
+
     @GET
     public List<Restaurante> buscar() {
+
         return Restaurante.listAll();
     }
 
     @POST
     @Transactional
-    public Response adicionar(Restaurante dto) {
-        dto.persist();
+    public Response adicionar(AdicionarRestauranteDTO dto) {
+        Restaurante restaurante = restauranteMapper.toRestaurante(dto);
+        restaurante.persist();
         return Response.status(Response.Status.CREATED).build();
     }
 
@@ -34,6 +43,7 @@ public class RestauranteResource {
         }
         Restaurante restaurante = restauranteOp.get();
         restaurante.nome = dto.nome;
+        restaurante.propietario = dto.propietario;
         restaurante.persist();
     }
 
