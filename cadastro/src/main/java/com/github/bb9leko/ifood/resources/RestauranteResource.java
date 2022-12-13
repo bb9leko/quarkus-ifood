@@ -1,15 +1,31 @@
-package com.github.bb9leko.ifood.cadastro;
+package com.github.bb9leko.ifood.resources;
 
-import com.github.bb9leko.ifood.cadastro.dto.AdicionarRestauranteDTO;
-import com.github.bb9leko.ifood.cadastro.dto.RestauranteMapper;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import javax.inject.Inject;
 import javax.transaction.Transactional;
-import javax.ws.rs.*;
+import javax.validation.Valid;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
+import javax.ws.rs.GET;
+import javax.ws.rs.NotFoundException;
+import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.util.List;
-import java.util.Optional;
+
+import com.github.bb9leko.ifood.cadastro.Restaurante;
+import com.github.bb9leko.ifood.cadastro.dto.AdicionarRestauranteDTO;
+import com.github.bb9leko.ifood.cadastro.dto.RestauranteDTO;
+import com.github.bb9leko.ifood.mappers.PratoMapper;
+import com.github.bb9leko.ifood.mappers.RestauranteMapper;
+
 
 @Path("/restaurantes")
 @Produces(MediaType.APPLICATION_JSON)
@@ -18,16 +34,20 @@ public class RestauranteResource {
 
     @Inject
     RestauranteMapper restauranteMapper;
+    
+    @Inject 
+    PratoMapper pratoMapper;
 
     @GET
-    public List<Restaurante> buscar() {
-
-        return Restaurante.listAll();
+    public List<RestauranteDTO> buscar() {
+    	Stream<Restaurante> restaurantes = Restaurante.streamAll();
+    	return restaurantes.map(r -> restauranteMapper.toRestauranteDTO(r)).collect(Collectors.toList());
+       
     }
 
     @POST
     @Transactional
-    public Response adicionar(AdicionarRestauranteDTO dto) {
+    public Response adicionar(@Valid AdicionarRestauranteDTO dto) {
         Restaurante restaurante = restauranteMapper.toRestaurante(dto);
         restaurante.persist();
         return Response.status(Response.Status.CREATED).build();
@@ -43,6 +63,7 @@ public class RestauranteResource {
         }
         Restaurante restaurante = restauranteOp.get();
         restaurante.nome = dto.nome;
+        restaurante.cnpj = dto.cnpj;
         restaurante.propietario = dto.propietario;
         restaurante.persist();
     }
@@ -57,4 +78,6 @@ public class RestauranteResource {
             throw new NotFoundException();
         });
     }
+    
+
 }

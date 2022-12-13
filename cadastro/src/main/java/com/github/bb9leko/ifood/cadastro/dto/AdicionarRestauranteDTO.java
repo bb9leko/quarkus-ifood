@@ -1,18 +1,22 @@
 package com.github.bb9leko.ifood.cadastro.dto;
 
-import com.github.bb9leko.ifood.cadastro.Localizacao;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
+import javax.persistence.CascadeType;
+import javax.persistence.OneToOne;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
-import javax.persistence.*;
-import java.util.Date;
 
 public class AdicionarRestauranteDTO {
 
+	@NotEmpty
+	@NotNull
     public String propietario;
 
     public String cnpj;
 
+    //Hibernate Validator 
+    @Size(min = 3, max = 6)
     public String nomeFantasia;
 
     @OneToOne(cascade = CascadeType.ALL)
