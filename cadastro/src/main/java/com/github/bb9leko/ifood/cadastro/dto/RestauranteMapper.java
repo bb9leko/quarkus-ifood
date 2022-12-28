@@ -1,9 +1,6 @@
-package com.github.bb9leko.ifood.mappers;
+package com.github.bb9leko.ifood.cadastro.dto;
 
 import com.github.bb9leko.ifood.cadastro.Restaurante;
-import com.github.bb9leko.ifood.cadastro.dto.AdicionarRestauranteDTO;
-import com.github.bb9leko.ifood.cadastro.dto.AtualizarRestauranteDTO;
-import com.github.bb9leko.ifood.cadastro.dto.RestauranteDTO;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -13,10 +10,10 @@ import org.mapstruct.MappingTarget;
 public interface RestauranteMapper {
 
 	@Mapping(target = "nome", source = "nomeFantasia")
-    //@Mapping(target = "id", ignore = true)
-    //@Mapping(target = "dataCriacao", ignore = true)
-    //@Mapping(target = "dataAtualizacao", ignore = true)
-    //@Mapping(target = "localizacao.id", ignore = true)
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "dataCriacao", ignore = true)
+    @Mapping(target = "dataAtualizacao", ignore = true)
+    @Mapping(target = "localizacao.id", ignore = true)
     public Restaurante toRestaurante(AdicionarRestauranteDTO dto);
 
     @Mapping(target = "nome", source = "nomeFantasia")

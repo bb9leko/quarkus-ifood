@@ -1,11 +1,9 @@
-package com.github.bb9leko.ifood.mappers;
+package com.github.bb9leko.ifood.cadastro.dto;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingTarget;
 
 import com.github.bb9leko.ifood.cadastro.Prato;
-import com.github.bb9leko.ifood.cadastro.dto.AdicionarPratoDTO;
-import com.github.bb9leko.ifood.cadastro.dto.PratoDTO;
 
 @Mapper(componentModel = "cdi")
 public interface PratoMapper {
